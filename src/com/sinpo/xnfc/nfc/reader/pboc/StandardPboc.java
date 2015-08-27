@@ -141,9 +141,9 @@ public abstract class StandardPboc {
 
 		parseBalance(app, BALANCE);
 
-		parseInfo21(app, INFO, 4, true);
+		parseInfo21(app, INFO, 4, true); //读短文件0x15 序列号和版本
 
-		parseLog24(app, LOG);
+		parseLog24(app, LOG); //交易日志
 
 		configApplication(app);
 
@@ -187,8 +187,22 @@ public abstract class StandardPboc {
 			app.setProperty(SPEC.PROP.SERIAL, String.format("%d", 0xFFFFFFFFL & sn));
 		}
 
-		if (d[9] != 0)
-			app.setProperty(SPEC.PROP.VERSION, String.valueOf(d[9]));
+		if (d[9] != 0){
+			//app.setProperty(SPEC.PROP.VERSION, String.valueOf(d[9])); //这里如果是PBOC的卡的话，版本应该是0x32和0x48  赵洋 2015.8.27
+			//这里应该先判断一下是AID，然后根据卡组织的定义来处理
+			if(0 ==  0){
+				if(d[9] == 0x32){
+					app.setProperty(SPEC.PROP.VERSION, "PBOC2.0");
+				}
+				else if (d[9] == 0x48){
+					app.setProperty(SPEC.PROP.VERSION, "PBOC3.0");
+				}
+				else {
+					app.setProperty(SPEC.PROP.VERSION, String.format("%x", d[9])); //不识别的版本
+				}
+			}
+				
+		}
 
 		app.setProperty(SPEC.PROP.DATE, String.format("%02X%02X.%02X.%02X - %02X%02X.%02X.%02X",
 				d[20], d[21], d[22], d[23], d[24], d[25], d[26], d[27]));
@@ -268,6 +282,6 @@ public abstract class StandardPboc {
 
 	protected void configApplication(Application app) {
 		app.setProperty(SPEC.PROP.ID, getApplicationId());
-		app.setProperty(SPEC.PROP.CURRENCY, getCurrency());
+		app.setProperty(SPEC.PROP.CURRENCY, getCurrency());  //就算是银联卡也不一定是RMB吧？zhaoyang
 	}
 }

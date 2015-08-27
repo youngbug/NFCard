@@ -63,8 +63,8 @@ public final class SPEC {
 		CHANGANTONG(R.string.spec_app_changantong),
 		SHANGHAIGJ(R.string.spec_app_shanghai),
 		DEBIT(R.string.spec_app_debit),
-		CREDIT(R.string.spec_app_credit),
-		QCREDIT(R.string.spec_app_qcredit),
+		CREDIT(R.string.spec_app_credit),        //银联贷记卡的AID
+		QCREDIT(R.string.spec_app_qcredit),		//银联的准贷记卡AID，非银联的金融卡AID就会不认识   zhaoyang
 		TUNIONEC(R.string.spec_app_tunion_ec),
 		TUNIONEP(R.string.spec_app_tunion_ep),
 		CITYUNION(R.string.spec_app_cityunion);
